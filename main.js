@@ -27,7 +27,7 @@
 	L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/{id}/MapServer/tile/{z}/{y}/{x}', {
 	    attribution: 'Tile Layer by <A HREF="http://esri.maps.arcgis.com/home/index.html" TARGET="_blank">Esri</A>',
 	    minZoom: 4,
-	    maxZoom: 16,
+	    maxZoom: 7,
 	    id: 'World_Light_Gray_Base'
 	}).addTo(map);
 
@@ -121,7 +121,7 @@
 		push: false,
 		position: "right",
 		width: 325,
-		speed: 500,
+		speed: 250,
 		hide: function(p, o) { p.removeClass('panel-shadow'); },
 		hidden: _closePanel,
 		show: function(p, o) { p.addClass('panel-shadow'); },
@@ -129,7 +129,10 @@
 	});
 	
 	$('#info-panel .close-button').on('click', function(){$('#info-panel').slideReveal('hide');})
-	$('#layer-switch').on('click', () => _activateLayer(true));
+	$('#layer-switch').on('click', (e) => {
+		_activateLayer(true);
+		$(e.currentTarget).toggleClass('airport', dataCat !== 'airport');
+	});
 	$('#tt-clear').on('click', _clearTypeahead);
 
 
@@ -154,7 +157,7 @@
 			ftrLayers[dataCat].remove();
 			dataCat = dataCat === 'state' ? 'airport' : 'state';
 			// Recalculate the data color ranges
-			$select.change();
+			_updateFtrColors();
 			// Reinit the typeahead
 			_clearTypeahead();
 			ta.typeahead('destroy');
@@ -200,9 +203,7 @@
 		ranges = ranges.map(function(o) {
 			return Number(o.toFixed(o >= 10 ? 0 : 1));
 		});
-		
-		colorFn = chroma.scale(option.chroma_scale).classes(ranges);
-		
+		colorFn = chroma.scale(option.chroma_scale).padding([.2, 0]).classes(ranges);
 		if (!!legend) legend.remove();
 		legend.addTo(map);
 	}	
@@ -224,6 +225,9 @@
 
 	function _resetHighlight(e) {
 		ftrLayers[dataCat].resetStyle();
+		if (dataCat === 'state' && !!layerSel?.bringToFront) {
+			layerSel.bringToFront();
+		}
 	}
 
 	function _selectFeatureFromMap(e) {
@@ -245,8 +249,9 @@
 			// Bring it to the front so it stays visible
 			layerSel.bringToFront();
 			// Fly to the selected feature
-			map.flyToBounds(layerSel.getBounds(),{paddingBottomRight: [450, 0], maxZoom: 8});
+			// map.flyToBounds(layerSel.getBounds(),{padding: [100, 100], maxZoom: 7});
 		} else {
+			// This has to happen for the marker to appear on the map
 			layerSel.addTo(map);
 		}
 		// Now open the side panel
@@ -262,12 +267,21 @@
 		);
 		$select.on('change', function() {
 			dataId = this.value;
-			_setChromaRanges();
-			ftrLayers[dataCat].clearLayers();
-			ftrLayers[dataCat].addData(ftrGeo[dataCat]);
+			_updateFtrColors();
+			// If we have a selected state, then we need to update its color and bring it to the front
+			if (!!selectedFtr && !!selectedFtr.properties['STUSPS']) {
+				const id = selectedFtr.properties['STUSPS'];
+				layerSel.setStyle(Object.assign({}, styles['selected'], {fillColor: _getColor(id)}));
+				layerSel.bringToFront();
+			}
 		});
-		
 	}
+
+	function _updateFtrColors() {
+		_setChromaRanges();
+		ftrLayers[dataCat].clearLayers();
+		ftrLayers[dataCat].addData(ftrGeo[dataCat]);
+	};
 	
 	function _initTypeahead() {
 		ta.typeahead({
@@ -296,6 +310,8 @@
 		panelOpen = false;
 		// Remove the selected layer
 		layerSel.remove();
+		layerSel = null;
+		selectedFtr = null;
 		// Fly back to the previous bounds or map bounds
 		map.flyToBounds(prevBounds);
 	}

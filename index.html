@@ -5,6 +5,9 @@
     <title>Third Way Benefits Map</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css" />
+	  <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
 		<!-- This must be placed after Leaflet's CSS -->
 		<script src="./libraries/jquery-3.7.1.min.js"></script>
 		<script src="./libraries/jquery.slidereveal.min.js"></script>
@@ -36,89 +39,98 @@
  	  <script src="./options.js"></script>
   </head>
   <body>
-    <div id="app-body">
-	    <button id="layer-switch">Layers</button>
-      <!-- Search Bar -->
-    	<div id="map-typeahead">
-		    <input class="typeahead" type="text">
-		    <span id="tt-clear">
-			    <span>+</span>
-		    </span>
+    <div id="container">
+	    <div class="app-header">
+		    <div class="app-logo">
+			    <div class="logo">Third Way</div>
+		    </div>
+		    <div class="spacer"></div>
+		    <!-- Search Bar -->
+		    <div id="map-typeahead">
+			    <input class="typeahead" type="search">
+		    </div>
+		    <button id="layer-switch" class="airport" title="Switch between State/Airport data">
+			    <span></span>
+		    </button>
 	    </div>
-      <!-- Map -->
-    	<div id="map-container"></div>
-    	<div id="overlay"></div>
-      <!-- Sliding information panel -->
-    	<div id="info-panel">
-    		<div class="data-container">
-    			<div class="close-button"></div>
-    			<div class="header"></div>
-    			<div class="sub-header toggle-link"></div>
-	    		<div class="body">
-		    		<div id="benefits" class="table main">
-			    		<div class="t-row t-header">
-			    			<div class="t-cell"></div>
-			    			<div class="t-cell">
-				    			<DIV class="table sub">
-							    	<DIV class="t-row">
-							    		<DIV class="t-cell"></DIV><DIV class="t-cell col-header">2050</DIV>
-							    	</DIV>
-						    	</DIV>
-			    			</div>
-			    		</div>
-              <div class="t-row">
-                <div class="t-cell t-label data-label">Number of avoided premature deaths</div>
-                <div class="t-cell">
-                  <DIV class="table sub">
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-num_apd_le"></DIV>
-                    </DIV>
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-num_apd_he"></DIV>
-                    </DIV>
-                  </DIV>
-                </div>
-              </div>
-              <div class="t-row">
-                <div class="t-cell t-label data-label">Total monetized benefits</div>
-                <div class="t-cell">
-                  <DIV class="table sub">
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-mb_all_le"></DIV>
-                    </DIV>
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-mb_all_he"></DIV>
-                    </DIV>
-                  </DIV>
-                </div>
-              </div>
-              <div class="t-row">
-                <div class="t-cell t-label data-label">Monetized benefits - avoided premature deaths</div>
-                <div class="t-cell">
-                  <DIV class="table sub">
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-mb_deaths_le"></DIV>
-                    </DIV>
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-mb_deaths_he"></DIV>
-                    </DIV>
-                  </DIV>
-                </div>
-              </div>
-              <div class="t-row">
-                <div class="t-cell t-label data-label">Monetized benefits - avoided cases of non-fatal illness</div>
-                <div class="t-cell">
-                  <DIV class="table sub">
-                    <DIV class="t-row">
-                      <DIV class="t-cell t-label">Avg</DIV><DIV class="t-cell data-mb_illness"></DIV>
-                    </DIV>
-                  </DIV>
-                </div>
-              </div>
-			    	</div>
-	    		</div>
-    		</div>
-    	</div>
+
+	    <div class="app-body">
+		    <!-- Map -->
+		    <div id="map-container"></div>
+		    <div id="overlay"></div>
+		    <!-- Sliding information panel -->
+		    <div id="info-panel">
+			    <div class="data-container">
+				    <div class="close-button"></div>
+				    <div class="header"></div>
+				    <div class="sub-header toggle-link"></div>
+				    <div class="body">
+					    <div id="benefits" class="table main">
+						    <div class="t-row t-header">
+							    <div class="t-cell"></div>
+							    <div class="t-cell">
+								    <DIV class="table sub">
+									    <DIV class="t-row">
+										    <DIV class="t-cell"></DIV><DIV class="t-cell col-header">2050</DIV>
+									    </DIV>
+								    </DIV>
+							    </div>
+						    </div>
+						    <div class="t-row">
+							    <div class="t-cell t-label data-label">Number of avoided premature deaths</div>
+							    <div class="t-cell">
+								    <DIV class="table sub">
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-num_apd_le"></DIV>
+									    </DIV>
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-num_apd_he"></DIV>
+									    </DIV>
+								    </DIV>
+							    </div>
+						    </div>
+						    <div class="t-row">
+							    <div class="t-cell t-label data-label">Total monetized benefits</div>
+							    <div class="t-cell">
+								    <DIV class="table sub">
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-mb_all_le"></DIV>
+									    </DIV>
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-mb_all_he"></DIV>
+									    </DIV>
+								    </DIV>
+							    </div>
+						    </div>
+						    <div class="t-row">
+							    <div class="t-cell t-label data-label">Monetized benefits - avoided premature deaths</div>
+							    <div class="t-cell">
+								    <DIV class="table sub">
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">Low</DIV><DIV class="t-cell data-mb_deaths_le"></DIV>
+									    </DIV>
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">High</DIV><DIV class="t-cell data-mb_deaths_he"></DIV>
+									    </DIV>
+								    </DIV>
+							    </div>
+						    </div>
+						    <div class="t-row">
+							    <div class="t-cell t-label data-label">Monetized benefits - avoided cases of non-fatal illness</div>
+							    <div class="t-cell">
+								    <DIV class="table sub">
+									    <DIV class="t-row">
+										    <DIV class="t-cell t-label">Avg</DIV><DIV class="t-cell data-mb_illness"></DIV>
+									    </DIV>
+								    </DIV>
+							    </div>
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+
     </div>
   </body>
   <script src="./main.js"></script>
