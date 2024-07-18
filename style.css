@@ -149,7 +149,7 @@ body {
 }
 
 .twitter-typeahead {
-	width:300px;
+	width:350px;
 }
 
 .typeahead, .tt-query, .tt-hint {
@@ -160,6 +160,8 @@ body {
 	border-radius: 4px;
 	outline: none;
 	box-sizing: border-box;
+  padding-right: 30px;
+	background-clip: padding-box !important;
 }
 
 .typeahead {
@@ -177,7 +179,8 @@ body {
 }
 
 .tt-hint {
-  color: #999
+  color: #999;
+	border-color: unset;
 }
 
 .tt-menu {
@@ -222,6 +225,30 @@ body {
 
 .tt-suggestion p {
   margin: 0;
+}
+
+#tt-clear {
+  position: absolute;
+  right: 3px;
+  display: flex;
+  top: 3px;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  font-weight: lighter;
+  cursor: pointer;
+	font-size: 22px;
+}
+
+#tt-clear span {
+	transform: rotate(45deg);
+}
+
+#tt-clear:hover {
+	background-color: #f4f4f4;
+	margin: -1px;
+	padding: 1px;
 }
 
 .gist {

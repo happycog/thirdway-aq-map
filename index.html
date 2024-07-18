@@ -5,7 +5,7 @@
     <title>Third Way Benefits Map</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css" />
-		<!-- Make sure you put this AFTER Leaflet's CSS -->
+		<!-- This must be placed after Leaflet's CSS -->
 		<script src="./libraries/jquery-3.7.1.min.js"></script>
 		<script src="./libraries/jquery.slidereveal.min.js"></script>
 		<script src="./libraries/topojson.min.js"></script>
@@ -39,7 +39,12 @@
     <div id="app-body">
 	    <button id="layer-switch">Layers</button>
       <!-- Search Bar -->
-    	<div id="map-typeahead"><input class="typeahead" type="text" placeholder="Search by county, address or zip code"></div>
+    	<div id="map-typeahead">
+		    <input class="typeahead" type="text">
+		    <span id="tt-clear">
+			    <span>+</span>
+		    </span>
+	    </div>
       <!-- Map -->
     	<div id="map-container"></div>
     	<div id="overlay"></div>
