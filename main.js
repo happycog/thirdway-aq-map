@@ -16,7 +16,8 @@
 	const mapBounds = L.latLngBounds(L.latLng(50, -61), L.latLng(19, -127));
 	const map = L.map('map-container', {renderer: L.canvas(), preferCanvas: true})
 		.setView([39.8283, -98.5795], 4)
-		.setMaxBounds(mapBounds);
+		.setMaxBounds(mapBounds)
+		.fitBounds(mapBounds);
 	// Add attribution
 	map.attributionControl.addAttribution('Map created by <A HREF="https://www.indecon.com/" TARGET="_blank">Industrial Economics Incorporated</A>');
 	map.attributionControl.addAttribution('Powered by <A HREF="http://esri.maps.arcgis.com/home/index.html" TARGET="_blank">Esri</A>');
@@ -26,7 +27,7 @@
 	// Add the base layer
 	L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/{id}/MapServer/tile/{z}/{y}/{x}', {
 	    attribution: 'Tile Layer by <A HREF="http://esri.maps.arcgis.com/home/index.html" TARGET="_blank">Esri</A>',
-	    minZoom: 4,
+	    minZoom: 2,
 	    maxZoom: 7,
 	    id: 'World_Light_Gray_Base'
 	}).addTo(map);
@@ -134,6 +135,7 @@
 		$(e.currentTarget).toggleClass('airport', dataCat !== 'airport');
 	});
 	$('#tt-clear').on('click', _clearTypeahead);
+	$('#test').on('click', _updateMapSize);
 
 
 	function _completeInit() {
@@ -141,6 +143,10 @@
 			_activateLayer();
 			_initTypeahead();
 		}
+	}
+
+	function _updateMapSize() {
+		map.fitBounds(mapBounds);
 	}
 
 	function _activateLayer(toggle) {
