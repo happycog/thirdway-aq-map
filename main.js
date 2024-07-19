@@ -1,6 +1,7 @@
 
 (() => {
-	let layerSel, prevBounds, selectedFtr,	colorFn, $select;
+	// let layerSel, prevBounds, selectedFtr,	colorFn, $select;
+	let layerSel, selectedFtr,	colorFn, $select;
 	let dataId = 'num_apd_he';
 	let dataCat = 'state';
 	let ftrLayers = {'state': null, 'airport': null};
@@ -135,7 +136,6 @@
 		$(e.currentTarget).toggleClass('airport', dataCat !== 'airport');
 	});
 	$('#tt-clear').on('click', _clearTypeahead);
-	$('#test').on('click', _updateMapSize);
 
 
 	function _completeInit() {
@@ -145,20 +145,18 @@
 		}
 	}
 
-	function _updateMapSize() {
-		map.fitBounds(mapBounds);
-	}
-
 	function _activateLayer(toggle) {
 		if (!!toggle) {
 			if (panelOpen) {
 				// We want to zoom back out to the whole map
-				prevBounds = mapBounds;
+				// prevBounds = mapBounds;
 				$('#info-panel').slideReveal('hide');
-			} else {
-				// We want to zoom back out to the whole map
-				map.flyToBounds(mapBounds);
 			}
+			// } else {
+			// 	// We want to zoom back out to the whole map
+			// 	map.flyToBounds(mapBounds);
+			// }
+			map.flyToBounds(mapBounds);
 			// Remove the old feature group layer
 			ftrLayers[dataCat].remove();
 			dataCat = dataCat === 'state' ? 'airport' : 'state';
@@ -244,7 +242,7 @@
     selectedFtr = ftr;
     const id = ftr.properties.UNIQUE_ID || ftr.properties.STUSPS;
     // If the side panel hasn't been opened then store the current bounds
-    if (!panelOpen) prevBounds = map.getBounds();
+    // if (!panelOpen) prevBounds = map.getBounds();
 		// Remove the previous selected layer if one exists
 		if (!!layerSel) layerSel.remove();
 		// Now create a new layer from the geometry
@@ -319,7 +317,7 @@
 		layerSel = null;
 		selectedFtr = null;
 		// Fly back to the previous bounds or map bounds
-		map.flyToBounds(prevBounds);
+		// map.flyToBounds(prevBounds);
 	}
 	
 	function _displayInfoPanel() {
