@@ -160,6 +160,7 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   border-radius: 2px;
 	margin-bottom: 20px !important;
+	margin-right: 10px;
 	transition: margin-bottom .5s;
 }
 
@@ -405,5 +406,35 @@ body {
 	}
 }
 
+@media screen and (max-width: 450px) {
+	.twitter-typeahead {
+		width: 200px;
+		transition: width .5s;
+	}
+
+	.typeahead, .tt-query, .tt-hint {
+		font-size: 10px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	.twitter-typeahead {
+		width: 100%;
+		transition: width .5s;
+	}
+
+	#map-typeahead {
+		flex-grow: 1;
+	}
+
+	#layer-switch {
+		margin: 0 5px;
+	}
+
+	.spacer {
+		flex-grow: 0;
+		width: 5px;
+	}
+}
 
 
