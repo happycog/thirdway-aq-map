@@ -192,7 +192,7 @@
 		}
 		if (!$select) _buildSelect();
 		$(div).prepend($select);
-		$(div).append("<div style='text-align:right;font-size:12px;color:#505050'>IEc (2050) report values</div>");
+		$(div).append('<div class="iec-footnote">IEc (2050) report values</div>');
 		return div;
 
 		function __formatVal(val) {

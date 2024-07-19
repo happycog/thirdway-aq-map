@@ -61,7 +61,7 @@ const styles = {
 	airport: {
 		radius: 6,
 		fillColor: "#ff7800",
-		color: "#000",
+		color: "#4c4c4c",
 		weight: 1,
 		opacity: 1,
 		fillOpacity: 1
