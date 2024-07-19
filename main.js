@@ -1,7 +1,7 @@
 
 (() => {
 	// let layerSel, prevBounds, selectedFtr,	colorFn, $select;
-	let layerSel, selectedFtr,	colorFn, $select;
+	let layerSel, selectedFtr, colorFn, $select, timeoutId;
 	let dataId = 'num_apd_he';
 	let dataCat = 'state';
 	let ftrLayers = {'state': null, 'airport': null};
@@ -137,6 +137,14 @@
 	});
 	$('#tt-clear').on('click', _clearTypeahead);
 
+	// Set resize event for window
+	window.addEventListener('resize', (event) => {
+		if (timeoutId) clearTimeout(timeoutId);
+		timeoutId = setTimeout(() => {
+			map.fitBounds(mapBounds);
+			timeoutId = null;
+		}, 50);
+	}, true);
 
 	function _completeInit() {
 		if (!!ftrLayers['airport'] && !!ftrLayers['state']) {
