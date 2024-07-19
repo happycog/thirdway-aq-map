@@ -9,8 +9,8 @@
 	let panelOpen = false;
 	let bh = {};
 	let placeholder = {
-		state: 'Search by state name or USPS abbreviation',
-		airport: 'Search by airport name or FAA location identifier'
+		state: 'Search by state name or USPS code',
+		airport: 'Search by airport name or FAA identifier'
 	}
 	const ta = $('.typeahead');
 	// Create map
@@ -141,7 +141,7 @@
 	window.addEventListener('resize', (event) => {
 		if (timeoutId) clearTimeout(timeoutId);
 		timeoutId = setTimeout(() => {
-			map.fitBounds(mapBounds);
+			map.fitBounds(mapBounds, {animate: false});
 			timeoutId = null;
 		}, 50);
 	}, true);

@@ -168,6 +168,8 @@ body {
   background: rgba(255,255,255,0.9);
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   border-radius: 2px;
+	margin-bottom: 20px !important;
+	transition: margin-bottom .5s;
 }
 
 .legend {
@@ -229,6 +231,7 @@ body {
 
 .twitter-typeahead {
 	width:350px;
+	transition: width .5s;
 }
 
 .typeahead, .tt-query, .tt-hint {
@@ -381,6 +384,22 @@ body {
 .t-row:not(.t-header) .sub .t-row:not(:first-child) .t-cell:last-child {
   background-color: #ffae3b30;
   border-bottom: 2px solid #ffffff;
+}
+
+@media screen and (max-width: 576px) {
+	.twitter-typeahead {
+		width: 250px;
+		transition: width .5s;
+	}
+
+	.typeahead, .tt-query, .tt-hint {
+		font-size: 12px;
+	}
+
+	.map-ctrl {
+		margin-bottom: 40px !important;
+		transition: margin-bottom .5s;
+	}
 }
 
 
