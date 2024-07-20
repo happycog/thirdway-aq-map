@@ -1,6 +1,5 @@
 
 (() => {
-	// let layerSel, prevBounds, selectedFtr,	colorFn, $select;
 	let layerSel, selectedFtr, colorFn, $select, timeoutId;
 	let dataId = 'num_apd_he';
 	let dataCat = 'state';
@@ -22,9 +21,6 @@
 	// Add attribution
 	map.attributionControl.addAttribution('Map created by <A HREF="https://www.indecon.com/" TARGET="_blank">Industrial Economics Incorporated</A>');
 	map.attributionControl.addAttribution('Powered by <A HREF="http://esri.maps.arcgis.com/home/index.html" TARGET="_blank">Esri</A>');
-	// Add the legend control
-	const legend = L.control({position: 'bottomleft'});
-	legend.onAdd = _updateLegend;
 	// Add the base layer
 	L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/{id}/MapServer/tile/{z}/{y}/{x}', {
 	    attribution: 'Tile Layer by <A HREF="http://esri.maps.arcgis.com/home/index.html" TARGET="_blank">Esri</A>',
@@ -114,6 +110,7 @@
 				return a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1;
 			}
 		});
+		_updateLegend();
 		_completeInit();
 	});
 
@@ -156,14 +153,8 @@
 	function _activateLayer(toggle) {
 		if (!!toggle) {
 			if (panelOpen) {
-				// We want to zoom back out to the whole map
-				// prevBounds = mapBounds;
 				$('#info-panel').slideReveal('hide');
 			}
-			// } else {
-			// 	// We want to zoom back out to the whole map
-			// 	map.flyToBounds(mapBounds);
-			// }
 			map.flyToBounds(mapBounds);
 			// Remove the old feature group layer
 			ftrLayers[dataCat].remove();
@@ -178,27 +169,6 @@
 		// Activate the feature layer
 		ftrLayers[dataCat].addTo(map);
 	}
-
-	function _updateLegend() {
-		const div = L.DomUtil.create('div', 'map-ctrl legend');
-		const scale = colorFn.classes();
-		const option = data_config.find(function(o){return o.ref_id === dataId});
-		let txt, lowval, highval;
-		for (let x = 0, y = scale.length - 1; x<y; x++) {
-			lowval = x === 0 ? '' : __formatVal(scale[x]);
-			highval = x === y - 1 ? '' : __formatVal(scale[x + 1] - (Math.pow(10, -1 * option.decimal_places)));
-			txt = lowval == '' ? '&lt;=&nbsp;' + highval : (highval == '' ? lowval + '&nbsp;+' : lowval + '&nbsp;&ndash;&nbsp;' + highval);
-			div.innerHTML += '<div><i style="background-color:' + colorFn(scale[x]) + '"></i> ' + txt + '</div>';
-		}
-		if (!$select) _buildSelect();
-		$(div).prepend($select);
-		$(div).append('<div class="iec-footnote">IEc (2050) report values</div>');
-		return div;
-
-		function __formatVal(val) {
-			return (option.currency ? '$' : '') + val.toLocaleString();
-		}
-	};
 	
 	function _setChromaRanges() {
 		const data = iecData[dataCat][dataId];
@@ -216,9 +186,29 @@
 			return Number(o.toFixed(o >= 10 ? 0 : 1));
 		});
 		colorFn = chroma.scale(option.chroma_scale).padding([.2, 0]).classes(ranges);
-		if (!!legend) legend.remove();
-		legend.addTo(map);
-	}	
+		_updateLegend();
+	}
+
+	function _updateLegend() {
+		const div = $('.map-ctrl.legend')[0];
+		div.innerHTML = '';
+		const scale = colorFn.classes();
+		const option = data_config.find(function(o){return o.ref_id === dataId});
+		let txt, lowval, highval;
+		for (let x = 0, y = scale.length - 1; x<y; x++) {
+			lowval = x === 0 ? '' : __formatVal(scale[x]);
+			highval = x === y - 1 ? '' : __formatVal(scale[x + 1] - (Math.pow(10, -1 * option.decimal_places)));
+			txt = lowval == '' ? '&lt;=&nbsp;' + highval : (highval == '' ? lowval + '&nbsp;+' : lowval + '&nbsp;&ndash;&nbsp;' + highval);
+			div.innerHTML += '<div><i style="background-color:' + colorFn(scale[x]) + '"></i> ' + txt + '</div>';
+		}
+		if (!$select) _buildSelect();
+		$(div).prepend($select);
+		$(div).append('<div class="iec-footnote">IEc (2050) report values</div>');
+
+		function __formatVal(val) {
+			return (option.currency ? '$' : '') + val.toLocaleString();
+		}
+	};
 	
 	function _ftrStyle(feature) {
 		return Object.assign({}, styles[dataCat],{fillColor: _getColor(feature.properties.UNIQUE_ID || feature.properties.STUSPS)});
@@ -249,8 +239,6 @@
 	function _selectFeature(ftr) {
     selectedFtr = ftr;
     const id = ftr.properties.UNIQUE_ID || ftr.properties.STUSPS;
-    // If the side panel hasn't been opened then store the current bounds
-    // if (!panelOpen) prevBounds = map.getBounds();
 		// Remove the previous selected layer if one exists
 		if (!!layerSel) layerSel.remove();
 		// Now create a new layer from the geometry
@@ -260,8 +248,6 @@
 			layerSel.addTo(map);
 			// Bring it to the front so it stays visible
 			layerSel.bringToFront();
-			// Fly to the selected feature
-			// map.flyToBounds(layerSel.getBounds(),{padding: [100, 100], maxZoom: 7});
 		} else {
 			// This has to happen for the marker to appear on the map
 			layerSel.addTo(map);
@@ -324,8 +310,6 @@
 		layerSel.remove();
 		layerSel = null;
 		selectedFtr = null;
-		// Fly back to the previous bounds or map bounds
-		// map.flyToBounds(prevBounds);
 	}
 	
 	function _displayInfoPanel() {
