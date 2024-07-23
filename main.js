@@ -193,7 +193,6 @@
 		let txt, lowval, highval;
 		for (let x = 0, y = scale.length - 1; x<y; x++) {
 			lowval = x === 0 ? '' : __formatVal(scale[x]);
-			// highval = x === y - 1 ? '' : __formatVal(scale[x + 1] - (Math.pow(10, -1 * option.decimal_places)));
 			highval = x === y - 1 ? '' : __formatVal(scale[x + 1]);
 			txt = lowval == '' ? '&lt;=&nbsp;' + highval : (highval == '' ? lowval + '&nbsp;+' : lowval + '&nbsp;&ndash;&nbsp;' + highval);
 			div.innerHTML += '<div><i style="background-color:' + colorFn(scale[x]) + '"></i> ' + txt + '</div>';
