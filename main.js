@@ -8,7 +8,7 @@
 	let panelOpen = false;
 	let bh = {};
 	let placeholder = {
-		state: 'Search by state name or USPS code',
+		state: 'Search by state name/abbreviation',
 		airport: 'Search by airport name or FAA identifier'
 	}
 	const ta = $('.typeahead');
@@ -181,10 +181,6 @@
 		vals.sort(function(a, b){return a - b});
 		// Let chroma take a first pass at our numbers and break them into ranges
 		ranges = chroma.limits(vals, 'q', scale_color_count);
-		// Now round those ranges off to avoid insane decimal placements
-		ranges = ranges.map(function(o) {
-			return Number(o.toFixed(o >= 10 ? 0 : 1));
-		});
 		colorFn = chroma.scale(option.chroma_scale).padding([.2, 0]).classes(ranges);
 		_updateLegend();
 	}
@@ -197,7 +193,8 @@
 		let txt, lowval, highval;
 		for (let x = 0, y = scale.length - 1; x<y; x++) {
 			lowval = x === 0 ? '' : __formatVal(scale[x]);
-			highval = x === y - 1 ? '' : __formatVal(scale[x + 1] - (Math.pow(10, -1 * option.decimal_places)));
+			// highval = x === y - 1 ? '' : __formatVal(scale[x + 1] - (Math.pow(10, -1 * option.decimal_places)));
+			highval = x === y - 1 ? '' : __formatVal(scale[x + 1]);
 			txt = lowval == '' ? '&lt;=&nbsp;' + highval : (highval == '' ? lowval + '&nbsp;+' : lowval + '&nbsp;&ndash;&nbsp;' + highval);
 			div.innerHTML += '<div><i style="background-color:' + colorFn(scale[x]) + '"></i> ' + txt + '</div>';
 		}
@@ -206,7 +203,8 @@
 		$(div).append('<div class="iec-footnote">IEc (2050) report values</div>');
 
 		function __formatVal(val) {
-			return (option.currency ? '$' : '') + val.toLocaleString();
+			return (option.currency ? '$' : '') + val.toLocaleString('en-US', {minimumFractionDigits: 0,
+				maximumFractionDigits: option.decimal_places});
 		}
 	};
 	
@@ -319,7 +317,8 @@
 		data_config.forEach(function(o){
 			$('.data-' + o.ref_id).text(map.name);
 			const tmp = iecData[dataCat][o.ref_id];
-			const val = o.currency ? '$' + ((tmp[id]/1000).toFixed()*1000).toLocaleString() : tmp[id].toFixed(tmp[id] >= 10 ? 0 : 1);
+			const val = (o.currency ? '$' : '') + tmp[id].toLocaleString('en-US', {minimumFractionDigits: 0,
+				maximumFractionDigits: o.decimal_places});
 			$('.data-' + o.ref_id).text(val);
 		});
 		

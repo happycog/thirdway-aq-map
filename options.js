@@ -4,14 +4,14 @@ const data_config = [
 		name: 'Number of avoided premature deaths (high-end estimate)',
 		ref_id: 'num_apd_he',
 		currency: false,
-		decimal_places: 2,
+		decimal_places: 3,
 		chroma_scale: ['ffffff', '003049']
 	},
 	{
 		name: 'Number of avoided premature deaths (low-end estimate)',
 		ref_id: 'num_apd_le',
 		currency: false,
-		decimal_places: 2,
+		decimal_places: 3,
 		chroma_scale: ['ffffff', '003049']
 	},	
 	{
