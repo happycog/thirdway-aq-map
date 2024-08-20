@@ -1,7 +1,8 @@
 
 (() => {
 	let layerSel, selectedFtr, colorFn, $select, timeoutId;
-	let dataId = 'num_apd_he';
+	// let dataId = 'num_apd_he';
+	let dataId = 'mb_all_le';
 	let dataCat = 'state';
 	let ftrLayers = {'state': null, 'airport': null};
 	let ftrGeo = {'state': null, 'airport': null};
