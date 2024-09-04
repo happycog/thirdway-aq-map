@@ -3,7 +3,7 @@
 	let layerSel, selectedFtr, colorFn, $select, timeoutId;
 	// let dataId = 'num_apd_he';
 	let dataId = 'mb_all_le';
-	let dataCat = 'state';
+	let dataCat = !!showAirport ? 'airport' : 'state';
 	let ftrLayers = {'state': null, 'airport': null};
 	let ftrGeo = {'state': null, 'airport': null};
 	let panelOpen = false;
@@ -129,10 +129,10 @@
 	});
 	
 	$('#info-panel .close-button').on('click', function(){$('#info-panel').slideReveal('hide');})
-	$('#layer-switch').on('click', (e) => {
-		_activateLayer(true);
-		$(e.currentTarget).toggleClass('airport', dataCat !== 'airport');
-	});
+	// $('#layer-switch').on('click', (e) => {
+	// 	_activateLayer(true);
+	// 	$(e.currentTarget).toggleClass('airport', dataCat !== 'airport');
+	// });
 	$('#tt-clear').on('click', _clearTypeahead);
 
 	// Set resize event for window
