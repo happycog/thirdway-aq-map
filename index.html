@@ -23,7 +23,7 @@
 				state: {},
 		    airport: {}
 	    };
-	    const showAirport = window.location.search.toLowerCase().split('&').indexOf('layer=airport') > -1;
+	    const showAirport = window.location.search.toLowerCase().split(/\?|&/).indexOf('layer=airport') > -1;
 	  </script>
     <script src="data/states/mb_all_he.js" ></script>
     <script src="data/states/mb_all_le.js" ></script>
